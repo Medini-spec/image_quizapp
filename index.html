@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quiz App</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<div class="home-box , custom-box ">
+
+		<h1>Instruction</h1><br>
+		<h3><p>Total number of questions: <span class="total-question"> </span></p></h3><br>
+
+		<button type="button" onclick="startQuiz()" class="btn" > Start Quiz </button>
+
+	</div>
+
+	<div class="quiz-box custom-box hide">
+		<div class="question-number"></div><br>
+
+		<div class="question-text"></div><br>
+
+		<div class="option-container">
+			
+
+		</div>
+		<br>
+
+		<div class="next-button-btn">
+			<button type="button" class="btn" onclick="next()">Next</button>
+			
+		</div>
+
+		<div class="answer-indicator">
+			
+		</div>
+		
+	</div>
+
+	<!-- ------------------------------------------------------------------------------ -->
+
+	<div class="result-box  custom-box hide">
+		<h1>Quiz Result</h1>
+
+		<table>
+
+			<tr>
+				<td>Total Question</td>
+				<td><span class="total-question"></span></td>
+			</tr>
+			<!-- ------------------------------------- -->
+			<tr>
+				<td>Attempt</td>
+				<td><span class="total-attempt"></span></td>
+			</tr>
+			<!-- ------------------------------------- -->
+			<tr>
+				<td>Correct</td>
+				<td><span class="total-correct"></span></td>
+			</tr>
+			<!-- -------------------------------------- -->
+			<tr>
+				<td>Wrong</td>
+				<td><span class="total-wrong"></span></td>
+			</tr>
+			<!-- ----------------------------------------- -->
+			<tr>
+				<td>Percentage</td>
+				<td><span class="percentage"></span></td>
+			</tr>
+			<!-- ------------------------------------------ -->
+			<tr>
+				<td>Your Total Score</td>
+				<td><span class="total-score"></span></td>
+			</tr>
+
+		</table>
+
+
+		<button type="button" class="btn" onclick="tryAgainQuiz()">Try Again</button>
+		<button type="button" class="btn" onclick="goToHome()">Go To Home</button>
+
+	</div>
+	<!-- ----------------------------------------------------script------------------------------------------------------------------------------- -->
+
+	<script type="text/javascript" >
+
+// Array of object
+
+const quiz = [
+{
+	q:' Which animal is this?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly'],
+	answer: 3,
+	img: 'https://cdn2.vectorstock.com/i/1000x1000/70/01/cute-head-pig-in-glasses-vector-22997001.jpg'
+},
+{
+	q:'This picture is related to ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:0,
+	img: 'https://i.ytimg.com/vi/EIKWmZNdQDw/hqdefault.jpg'
+},
+{
+	q:'Guess this person ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:0,
+	img: 'https://i.pinimg.com/originals/11/41/5a/11415a11e4f4503d3351e1f183be8907.jpg'
+},
+{
+	q:'Guess this maths equations nerd ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:3,
+	img: 'https://ih1.redbubble.net/image.1254975311.4802/flat,750x,075,f-pad,750x1000,f8f8f8.u3.jpg'
+},
+
+{
+	q:'Always wears a mask ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:2,
+	img: 'https://www.deccanherald.com/sites/dh/files/styles/article_detail/public/article_images/2020/05/19/iStock-1214907564-2029095503-1589425922.jpg?itok=oTXeAn8G'
+},
+{
+	q:'Intelligent one  ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:4,
+	img: 'https://i.pinimg.com/originals/3f/3e/e8/3f3ee8d551357f53e88e535a33c40c1f.jpg'
+},
+{
+	q:'The person who spend most of the time in sleeping  ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:1,
+	img: 'https://i.pinimg.com/originals/64/dd/0b/64dd0b6e852e87d99ad958194df48835.jpg'
+},
+{
+	q:'The person who does the child labour?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer: 2,
+	img: 'https://images.squarespace-cdn.com/content/v1/53cacb60e4b03cd266be2334/1511751123835-E7LPPH3G68KQZN4QQ5XF/ke17ZwdGBToddI8pDm48kNaIoZBl4GuBdA1PqzBoOZZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UZsOm9WmmO-ecjWABbJXrc5lyoG2cJNVWAy5Qudc1Df52anKKElMM0s3nuMZPJoZ7A/20171121_085047.jpg'
+
+},
+{
+	q:'The person who sleep on makeup set  ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:3,
+	img: 'https://i.ytimg.com/vi/ZJ7btvbRl1E/hqdefault.jpg'
+},
+{
+	q:'Realte this picture ?',
+	option:['Avaneesh','Medhini','Karthik', 'Chaitraly', 'Pawan'],
+	answer:0,
+	img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnrBveH5In0CzQ4hXqlVspNG-66QgkEV-lEA&usqp=CAU'
+}
+
+]
+
+
+
+// ---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+const questionNumber = document.querySelector(".question-number");
+const questionText = document.querySelector(".question-text");
+const optionContainer = document.querySelector(".option-container");
+const answerIndicatorContainer = document.querySelector(".answer-indicator");
+const homeBox = document.querySelector(".home-box");
+const quizBox = document.querySelector(".quiz-box");
+const resultBox = document.querySelector(".result-box");
+
+
+// const  questionLimit = 5; to perform minimun number of question out of quiz length
+let questionCounter = 0;
+let currentQuestion;
+let availableQuestions = [];
+let availableOptions = [];
+let correctAnswers = 0;
+let attempt = 0;
+
+// push the questions into availableQuestion Array
+function setAvailableQuestions(){
+	const totalQuestion = quiz.length;
+	for (let i=0; i<totalQuestion; i++){
+		availableQuestions.push(quiz[i])
+	}
+
+}
+
+//set question number and question and options
+function getNewQuestion(){
+	//set question numbber
+	questionNumber.innerHTML = "Question" + '&nbsp' + (questionCounter + 1) + '&nbsp' +  "of"  + '&nbsp' + quiz.length ;
+
+	//get question text
+	//get random question
+	const questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
+	currentQuestion = questionIndex;
+	questionText.innerHTML = currentQuestion.q;
+	// console.log(questionIndex)
+	//get the position of 'questionindex' from the availablequestion array
+	const index1 = availableQuestions.indexOf(questionIndex);
+	// console.log(index1)
+	//remove the 'questionIndex' from the avilableQuestion Array, so that ques does not repeat
+	availableQuestions.splice(index1,1);
+	// console.log(questionIndex)
+	// console.log(availableQuestions)
+
+	// show question if img property exists
+	if(currentQuestion.hasOwnProperty("img")){
+		// console.log(currentQuestion.img);
+		const img = document.createElement("img");
+		img.src = currentQuestion.img;
+		questionText.appendChild(img);
+
+	}	
+
+
+	// set options
+	// get the length of options
+	const optionLen = currentQuestion.option.length
+	// console.log(currentQuestion.options)
+	// push options into availableOptions Array
+	for(let i=0; i<optionLen; i++){
+		availableOptions.push(i)
+	}
+	optionContainer.innerHTML = '';
+	let animationDelay = 0.1;
+	// create options in innerHTML
+	for (let i=0; i<optionLen; i++){
+		// random option
+		const optionIndex = availableOptions[Math.floor(Math.random() * availableOptions.length)];
+		// get the position of 'optionIndex' from the availableOptions
+		const index2 = availableOptions.indexOf(optionIndex);
+		// remove the 'optionIndex' from the availableOptions, so that the options does not  repeat
+		availableOptions.splice(index2,1);
+
+		const option = document.createElement("div");
+		option.innerHTML = currentQuestion.option[optionIndex];
+		option.id = optionIndex;
+		option.style.animationDelay = animationDelay + 's';
+		animationDelay = animationDelay + 0.1;
+		option.className = "option";
+		optionContainer.appendChild(option)
+		option.setAttribute("onclick","getResult(this)");
+	}
+
+
+	questionCounter++
+}
+
+//get the result of current attempt question
+function getResult(element){
+	const id = parseInt(element.id);
+	// get the answer by comparing the id of clicked option
+	// console.log(typeof id)
+	if(id === currentQuestion.answer){
+		// set the green color to the correct option
+		element.classList.add("correct");
+		//add the indicator to correct mark
+		updateAnswerIndicator("correct");
+		correctAnswers++;
+		// console.log("correct:" + correctAnswers)
+
+	}
+	else{
+		// set the red color to the incorrect option
+		element.classList.add("wrong");
+		//add the indicator to wrong mark
+		updateAnswerIndicator("wrong");
+
+
+		// if answer is incorrect the show the correct option by adding green color the correct option
+		const optionLen = optionContainer.children.length;
+		for(let i=0; i<optionLen; i++){
+			if(parseInt(optionContainer.children[i].id) === currentQuestion.answer){
+				optionContainer.children[i].classList.add("correct");
+			}
+		}
+
+
+	}
+	attempt++;
+	unclickableOptions();
+}
+
+// make all the options unclickable once the user select a option (RESTRICT THE USER TO CHANGE THE OPTION)			
+function  unclickableOptions(){
+	const optionLen = optionContainer.children.length;
+	for(let i=0; i<optionLen; i++){
+		optionContainer.children[i].classList.add("already-answered");
+	}
+
+}
+
+
+function answerIndicator(){
+	answerIndicatorContainer.innerHTML = '';
+	const totalQuestion = quiz.length;
+	for(let i=0; i<totalQuestion; i++){
+		const indicator = document.createElement("div");
+		answerIndicatorContainer.appendChild(indicator);
+	}
+}
+
+
+function updateAnswerIndicator(markType){
+	answerIndicatorContainer.children[questionCounter-1].classList.add(markType)
+	
+}
+
+function next(){
+	if(questionCounter === quiz.length){
+		// console.log("quiz over");
+		quizOver();
+	}
+	else{
+		getNewQuestion();
+	}
+}
+
+function quizOver(){
+	// hide quiz -box
+	quizBox.classList.add("hide");
+	// show result-box
+	resultBox.classList.remove("hide");
+	quizResult();
+}
+
+// get the quizResult
+function quizResult(){
+
+	resultBox.querySelector(".total-question").innerHTML = quiz.length;
+	resultBox.querySelector(".total-attempt").innerHTML = attempt;
+	resultBox.querySelector(".total-correct").innerHTML = correctAnswers;
+	resultBox.querySelector(".total-wrong").innerHTML = attempt - correctAnswers;
+	const percentage = (correctAnswers/quiz.length)*100;
+	resultBox.querySelector(".percentage").innerHTML = percentage.toFixed(2) + "%";
+	resultBox.querySelector(".total-score").innerHTML = correctAnswers + "/" + quiz.length;
+
+}
+
+function resetQuiz(){
+	 questionCounter = 0;
+	 correctAnswers = 0;
+	 attempt = 0;
+
+
+}
+
+function tryAgainQuiz() {
+	//hide the resultbox
+	resultBox.classList.add("hide");
+	// show the quizBox
+	quizBox.classList.add("hide");
+	
+	resetQuiz();
+	startQuiz();
+
+}
+
+function goToHome(){
+	
+	// show the quizBox
+	resultBox.classList.add("hide");
+	
+	homeBox.classList.remove("hide");
+	
+	resetQuiz();
+ }
+
+// #### STARTING POINT ####
+
+function startQuiz(){
+
+	// hide homebox 
+	resultBox.classList.add("hide");
+	homeBox.classList.add("hide");
+	// show the quizBox
+	quizBox.classList.remove("hide");
+	// homeBox.classList.add("hide");
+
+	
+	// window.onload = function(){
+	// first we will set all questions in availableQuestions Array
+	setAvailableQuestions();
+	// second we will call getNewQuestion(), function
+	getNewQuestion();
+	// to create indicator of answers
+	answerIndicator();
+}
+
+window.onload = function(){
+
+	homeBox.querySelector(".total-question").innerHTML = quiz.length;
+
+}
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
